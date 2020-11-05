@@ -19,4 +19,4 @@ Route::get("info",function(){
 });
 Route::get("test","TestController@test");
 Route::get("test1","TestController@test1");
-Route::get("text","TestController@text");
+Route::get("indexs","TestController@index");

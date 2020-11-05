@@ -16,12 +16,19 @@ class TestController extends Controller
     	$res=DB::table("test")->limit(4)->get()->Toarray();
     	var_dump($res);
     }
+    public function index(){
+    	$res=$this->text();
+    	if ($res) {
+    		echo $_GET['echostr'];
+    	}
+
+    }
     public function text(){
     	$signature = $_GET["signature"];
 	    $timestamp = $_GET["timestamp"];
 	    $nonce = $_GET["nonce"];
 		
-	    $token = TOKEN;
+	    $token = "pwd";
 	    $tmpArr = array($token, $timestamp, $nonce);
 	    sort($tmpArr, SORT_STRING);
 	    $tmpStr = implode( $tmpArr );
