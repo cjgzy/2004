@@ -37,19 +37,35 @@ class TestController extends Controller
 	    $tmpStr = sha1( $tmpStr );
 	    
 	    if( $tmpStr == $signature ){
-	    	 
+
 	    	$xml_str=file_get_contents("php://input");
 	    	log::info($xml_str);
+	    	$pos=simplexml_load_string($xml_str);
+	    	if ($pos->MsgType="event") {
+	   			
+	    	}
 
-// 	    	$xml="<xml>
-//   <ToUserName><![CDATA[toUser]]></ToUserName>
-//   <FromUserName><![CDATA[fromUser]]></FromUserName>
-//   <CreateTime>12345678</CreateTime>
-//   <MsgType><![CDATA[text]]></MsgType>
-//   <Content><![CDATA[你好]]></Content>
-// </xml>";
+// 	 
 
 	    }
+	    $info=$this->info($pos,$Content);
+	}
+	public function info($pos,$Content){
+		$ToUserName=$pos->FromUserName;
+		$FromUserName=$pos->ToUserName;
+		$CreateTime=time();
+		$MsgType="text";
+		   	$xml="<xml>
+  <ToUserName><![CDATA[%s]]></ToUserName>
+  <FromUserName><![CDATA[%s]]></FromUserName>
+  <CreateTime>%s</CreateTime>
+  <MsgType><![CDATA[%s]]></MsgType>
+  <Content><![CDATA[%s]]></Content>
+</xml>";
+	$info=sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$Content);
+	Log::info($info);
+	echo $info;
+
 	}
 	public function admin(){
 		$res=$this->access();
