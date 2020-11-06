@@ -37,9 +37,9 @@ class TestController extends Controller
 	    $tmpStr = sha1( $tmpStr );
 	    
 	    if( $tmpStr == $signature ){
-	    	$xml_str=file_get_contents("php//:input");
+	    	$xml_str=file_get_contents("php://input");
 	    	log::info($xml_str);
-	    	
+
 // 	    	$xml="<xml>
 //   <ToUserName><![CDATA[toUser]]></ToUserName>
 //   <FromUserName><![CDATA[fromUser]]></FromUserName>
