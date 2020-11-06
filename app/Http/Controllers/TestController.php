@@ -42,7 +42,7 @@ class TestController extends Controller
 	    	log::info($xml_str);
 	    	//将json转换成数组
 	    	$pos=simplexml_load_string($xml_str);
-	    	$Content="王妍蕊是傻逼";
+	    	$Content="谁关注谁就是王妍蕊他对象";
 
 // 	 
 
