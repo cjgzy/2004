@@ -17,7 +17,7 @@ Route::get('/', function () {
 Route::get("info",function(){
 	phpinfo();
 });
-Route::get("test","TestController@test");
+Route::post("test","TestController@test");
 Route::get("test1","TestController@test1");
 Route::get("indexs","TestController@index");
 Route::get("access","TestController@access");

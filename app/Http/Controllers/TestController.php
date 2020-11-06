@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use DB;
+use Log;
 class TestController extends Controller
 {
     public function test(){
@@ -17,7 +18,7 @@ class TestController extends Controller
     	var_dump($res);
     }
     public function index(){
-    	// $res=$this->text();
+    	$res=$this->text();
     	
     	if ($res) {
     		echo $_GET['echostr'];
@@ -36,9 +37,17 @@ class TestController extends Controller
 	    $tmpStr = sha1( $tmpStr );
 	    
 	    if( $tmpStr == $signature ){
-	        return true;
-	    }else{
-	        return false;
+	    	$xml_str=file_get_contents("php//:input");
+	    	log::info($xml_str);
+	    	
+// 	    	$xml="<xml>
+//   <ToUserName><![CDATA[toUser]]></ToUserName>
+//   <FromUserName><![CDATA[fromUser]]></FromUserName>
+//   <CreateTime>12345678</CreateTime>
+//   <MsgType><![CDATA[text]]></MsgType>
+//   <Content><![CDATA[你好]]></Content>
+// </xml>";
+
 	    }
 	}
 	public function admin(){
