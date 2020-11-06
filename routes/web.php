@@ -20,3 +20,5 @@ Route::get("info",function(){
 Route::get("test","TestController@test");
 Route::get("test1","TestController@test1");
 Route::get("indexs","TestController@index");
+Route::get("access","TestController@access");
+Route::get("admin","TestController@admin");
