@@ -41,9 +41,7 @@ class TestController extends Controller
 	    	$xml_str=file_get_contents("php://input");
 	    	log::info($xml_str);
 	    	$pos=simplexml_load_string($xml_str);
-	    	if ($pos->MsgType="event") {
-	   			
-	    	}
+	    	$Content="谢谢关注";
 
 // 	 
 
