@@ -37,8 +37,9 @@ class TestController extends Controller
 	    $tmpStr = sha1( $tmpStr );
 	    
 	    if( $tmpStr == $signature ){
+
 	    	$xml_str=file_get_contents("php://input");
-	    	log::info($xml_str);
+	    	file_put_contents("access_weixin.log",$xml_str);
 
 // 	    	$xml="<xml>
 //   <ToUserName><![CDATA[toUser]]></ToUserName>
