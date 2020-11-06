@@ -40,8 +40,9 @@ class TestController extends Controller
 
 	    	$xml_str=file_get_contents("php://input");
 	    	log::info($xml_str);
+	    	//将json转换成数组
 	    	$pos=simplexml_load_string($xml_str);
-	    	$Content="谢谢关注";
+	    	$Content="王妍蕊是傻逼";
 
 // 	 
 
