@@ -60,7 +60,7 @@ class TestController extends Controller
   <MsgType><![CDATA[%s]]></MsgType>
   <Content><![CDATA[%s]]></Content>
 </xml>";
-	$info=sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$Content);
+	$info=sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
 	Log::info($info);
 	echo $info;
 
