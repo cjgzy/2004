@@ -43,7 +43,7 @@ class TestController extends Controller
 	    	//将json转换成数组
 	    	$pos=simplexml_load_string($xml_str);
 	    	if ($pos->Event=='subscribe') {
-	    		if ($pos->MsgType=='text') {
+	    		if ($pos->MsgType=='event') {
 	    			$Content="谢谢关注";
 	    			$info=$this->info($pos,$Content);	
 	    		}
