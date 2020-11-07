@@ -22,3 +22,4 @@ Route::get("test1","TestController@test1");
 Route::post("indexs","TestController@index");
 Route::get("access","TestController@access");
 Route::get("admin","TestController@admin");
+Route::get("code_token","TestController@code_token");

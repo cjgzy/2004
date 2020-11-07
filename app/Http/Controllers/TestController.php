@@ -33,8 +33,8 @@ class TestController extends Controller
 	    $token = env("WX_TOKEN");
 	    $tmpArr = array($token, $timestamp, $nonce);
 	    sort($tmpArr, SORT_STRING);
-	    $tmpStr = implode( $tmpArr );
-	    $tmpStr = sha1( $tmpStr );
+	    $tmpStr = implode($tmpArr);
+	    $tmpStr = sha1($tmpStr);
 	    
 	    if( $tmpStr == $signature ){
 
@@ -42,12 +42,16 @@ class TestController extends Controller
 	    	log::info($xml_str);
 	    	//将json转换成数组
 	    	$pos=simplexml_load_string($xml_str);
-	    	$Content="谢谢关注";
+	    	if ($pos->Event=='subscribe') {
+	    		if ($pos->MsgType=='text') {
+	    			$Content="谢谢关注";
+	    			$info=$this->info($pos,$Content);	
+	    		}
+	    	}
 
 // 	 
 
 	    }
-	    $info=$this->info($pos,$Content);
 	}
 	public function info($pos,$Content){
 		$ToUserName=$pos->FromUserName;
