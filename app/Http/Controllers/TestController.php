@@ -13,6 +13,10 @@ class TestController extends Controller
     	Redis::set($key,time());
     	echo Redis::get($key);
     }
+    //接口
+    public function work(){
+
+    }
     public function test1(){
     	$res=DB::table("test")->limit(4)->get()->Toarray();
     	var_dump($res);
@@ -47,12 +51,16 @@ class TestController extends Controller
 	    			$Content="谢谢关注";
 	    			$info=$this->info($pos,$Content);	
 	    		}
-	    	}
-
-// 	 
-
+	    	 }
+          }
 	    }
+	    if($postarray->MsgType=="text"){
+            if($postarray->Content=="天气"){
+                $Content = $this->getweather();
+                $this->info($postarray,$Content);
+        }
 	}
+
 	public function info($pos,$Content){
 		$ToUserName=$pos->FromUserName;
 		$FromUserName=$pos->ToUserName;
@@ -90,8 +98,26 @@ class TestController extends Controller
 		$token=json_decode($token,true);
 		$token=$token['access_token'];
 		// dd($token);
-		Redis::setex("token",time()*60*60*24,$token);
+		Redis::setex("token",3600,$token);
 		}
 		dd($token);
 	}
+	    //回复天气模板
+    public function getweather(){
+        $url = "http://api.k780.com:88/?app=weather.future&weaid=beijing&&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json";
+        $weather = file_get_contents($url);
+        $weather = json_decode($weather,true);
+        //dd($weather);
+        // $aa = $weather["result"];
+        // dd($aa);
+        if($weather["success"]){
+            $content = "";
+            foreach($weather["result"] as $v){
+                $content .= "地区:".$v['citynm']."日期:".$v['days']."温度:".$v['temperature']."风速:".$v['winp']."天气:".$v['weather'];
+            }
+        }
+        return $content;
+        Log::info("============".$weather);
+
+    }
 }
