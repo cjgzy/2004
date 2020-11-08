@@ -53,12 +53,13 @@ class TestController extends Controller
 	    		}
 	    	 }
           }
-	    }
-	    if($pos->MsgType=="text"){
+          if($pos->MsgType=="text"){
             if($pos->Content=="天气"){
                 $Content = $this->getweather();
                 $this->info($pos,$Content);
         }
+	    }
+	    
 	}
 
 	public function info($pos,$Content){
