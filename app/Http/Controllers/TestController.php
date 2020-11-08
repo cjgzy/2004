@@ -54,10 +54,10 @@ class TestController extends Controller
 	    	 }
           }
 	    }
-	    if($postarray->MsgType=="text"){
-            if($postarray->Content=="天气"){
+	    if($pos->MsgType=="text"){
+            if($pos->Content=="天气"){
                 $Content = $this->getweather();
-                $this->info($postarray,$Content);
+                $this->info($pos,$Content);
         }
 	}
 
