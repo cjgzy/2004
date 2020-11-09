@@ -84,15 +84,15 @@ class TestController extends Controller
 	public function access(){
 		$token=Redis::get("token");
 		if (!$token) {
-		$stream_opts = [
-		    "ssl" => [
-		        "verify_peer"=>false,
-		        "verify_peer_name"=>false,
-		    ]
-		]; 
+		// $stream_opts = [
+		//     "ssl" => [
+		//         "verify_peer"=>false,
+		//         "verify_peer_name"=>false,
+		//     ]
+		// ]; 
 		$url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx0698605a1ca84bf6&secret=4f806f9e3a01e61d063e175aaa103ee4";
-		$token=file_get_contents($url,false,stream_context_create($stream_opts));
-			// $token=file_get_contents($url);
+		// $token=file_get_contents($url,false,stream_context_create($stream_opts));
+			$token=file_get_contents($url);
 		// dd($token);
 		$token=json_decode($token,true);
 		$token=$token['access_token'];
