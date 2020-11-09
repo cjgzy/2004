@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use DB;
 use Log;
-use WeiXin\WeixinModel;
+use App\WeiXin\WeixinModel;
 class TestController extends Controller
 {
   public function index(){
@@ -17,68 +17,54 @@ class TestController extends Controller
     	}
 
     }
-    public function text(){
-    	$signature = $_GET["signature"];
-	    $timestamp = $_GET["timestamp"];
-	    $nonce = $_GET["nonce"];
-	
-	    $token = env("WX_TOKEN");
-	    $tmpArr = array($token, $timestamp, $nonce);
-	    sort($tmpArr, SORT_STRING);
-	    $tmpStr = implode($tmpArr);
-	    $tmpStr = sha1($tmpStr);
-	    
-	    if( $tmpStr == $signature ){
+      //自动回复
+    public function  test()
+    {
+        //接收数据
+        $data = file_get_contents("php://input");
+        Log::info("=====接收数据====" . $data);
+        //转换成对象
+        $postarray = simplexml_load_string($data);
+        $access_token = $this->access();//获取token
+        $openid = $postarray->FromUserName;//获取发送方的 openid
+        $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" . $access_token . "&openid=" . $openid . "&lang=zh_CN";
+        $user = json_decode($this->http_get($url), true);
+        $WexiinModel = new WeixinModel;
+        $first = WeixinModel::where("openid", $user["openid"])->first();
+        if ($first) {
+            $array = ["你咋又回来了,滚犊子","欢迎回来!!!!"];
+            $Content = $array[array_rand($array,1)];
+            $this->info($postarray,$Content);
+        } else {
+            if ($postarray->MsgType == "event") {
+                if ($postarray->Event == "subscribe") {
+                    $array = ["你好啊", "欢迎关注!!!"];
+                    $Content = $array[array_rand($array, 1)];
+                    $this->info($postarray, $Content);
+                    //入库
+                    $data = [
+                        "openid" => $user["openid"],
+                        "city" => $user["city"],
+                        "sex" => $user["sex"],
+                        "language" => $user["language"],
+                        "province" => $user["province"],
+                        "country" => $user["country"],
+                        "subscribe_time" => $user["subscribe_time"],
+                        "subscribe" => $user["subscribe"],
+                        "subscribe_scene" => $user["subscribe_scene"],
+                    ];
+                    $WexiinModel->insert($data);
 
-	    	$xml_str=file_get_contents("php://input");
-	    	log::info($xml_str);
-	    	//将json转换成数组
-	    	$pos=simplexml_load_string($xml_str);
-	    	 if($pos->MsgType=="event"){
-            if($pos->Event=="subscribe"){
-                $Content = "谢谢关注！！！";
-                $this->info($pos,$Content);
-                $openid = $pos->FromUserName;//获取发送方的 openid
-                $access_token = $this->access();//获取token
-                $url ="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN";
-                Log::info("===============================",$url);
-             	// dd($url);
-                $user = json_decode($this->http_get($url),true);
-                if (isset($user["errcode"])) {
-                    Log::info("====获取用户信息失败s=====".$user["errcode"]);
-                    $this->writeLog("获取用户信息失败s");
-                }else{
-                    $WexiinModel = new WeixinModel;
-                    $first = WeixinModel::where("openid",$user["openid"])->first();
-                    if($first){
-                        WeixinModel::where("openid",$user['openid'])->update(['subscribe'=>1]);
-                    }else{
-                        $data =[
-                            "openid"=>$user["openid"],
-                            "city"=>$user["city"],
-                            "sex"=>$user["sex"],
-                            "language"=>$user["language"],
-                            "province"=>$user["province"],
-                            "country"=>$user["country"],
-                            "subscribe_time"=>$user["subscribe_time"],
-                            "subscribe"=>$user["subscribe"],
-                            "subscribe_scene"=>$user["subscribe_scene"],
-                        ];
-                        $WexiinModel->insert($data);
-                    }
+                }
+            }
+            if($postarray->MsgType=="text"){
+                if($postarray->Content=="天气"){
+                    $Content = $this->getweather();
+                    $this->info($postarray,$Content);
                 }
             }
         }
-          }
-          if($pos->MsgType=="text"){
-            if($pos->Content=="天气"){
-                $Content = $this->getweather();
-                $this->info($pos,$Content);
-        }
-	    }
-	    
-	    
-	}
+    }
 
 	public function info($pos,$Content){
 		$ToUserName=$pos->FromUserName;
