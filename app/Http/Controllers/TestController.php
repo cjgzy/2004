@@ -9,20 +9,7 @@ use Log;
 use WeiXin\WeixinModel;
 class TestController extends Controller
 {
-    public function test(){
-    	$key="11111";
-    	Redis::set($key,time());
-    	echo Redis::get($key);
-    }
-    //接口
-    public function work(){
-
-    }
-    public function test1(){
-    	$res=DB::table("test")->limit(4)->get()->Toarray();
-    	var_dump($res);
-    }
-    public function index(){
+  public function index(){
     	$res=$this->text();
     	
     	if ($res) {
@@ -150,28 +137,15 @@ class TestController extends Controller
         Log::info("============".$weather);
 
     }
-
-
-
-
-
-
-
-
-
-
-
-public function text2(){
-	 print_r($_GET);
-}
-public function text3(){
-		$data="<ToUserName><![CDATA[oYpK-wk6zp8HRwv9Nge0xlO5pgh4]]></ToUserName>
-  <FromUserName><![CDATA[gh_445139791c58]]></FromUserName>
-  <CreateTime>1604879941</CreateTime>
-  <MsgType><![CDATA[text]]></MsgType>
-  <Content><![CDATA[地区:北京日期:2020-11-09温度:16℃/2℃风速:小于3级天气:晴地区:北京日期:2020-11-10温度:15℃/2℃风速:小于3级天气:晴地区:北京日期:2020-11-11温度:16℃/3℃风速:小于3级天气:多云地区:北京日期:2020-11-12温度:17℃/4℃风速:小于3级天气:晴地区:北京日期:2020-11-13温度:15℃/2℃风速:小于3级天气:晴转多云地区:北京日期:2020-11-14温度:12℃/3℃风速:小于3级天气:多云]]></Content>
-";
-echo $data;
-	}
+    public function http_get($url){
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);//向那个url地址上面发送
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);//设置发送http请求时需不需要证书
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//设置发送成功后要不要输出1 不输出，0输出
+        $output = curl_exec($ch);//执行
+        curl_close($ch);    //关闭
+        return $output;
+ }
 
 }
