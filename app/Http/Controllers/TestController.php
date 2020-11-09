@@ -28,7 +28,7 @@ class TestController extends Controller
         $WexiinModel = new WeixinModel;
         $first = WeixinModel::where("openid",$user["openid"])->first();
         if ($first) {
-            $array = ["你咋又回来了,滚犊子","欢迎回来!!!!"];
+            $array = ["欢迎回来!!!!"];
             $Content = $array[array_rand($array,1)];
             $this->info($postarray,$Content);
         } else {
@@ -53,13 +53,13 @@ class TestController extends Controller
 
                 }
             }
-            if($postarray->MsgType=="text"){
+        }
+         if($postarray->MsgType=="text"){
                 if($postarray->Content=="天气"){
                     $Content = $this->getweather();
                     $this->info($postarray,$Content);
                 }
             }
-        }
     }
 
 	public function info($postarray,$Content){
