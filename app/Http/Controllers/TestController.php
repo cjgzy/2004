@@ -22,11 +22,11 @@ class TestController extends Controller
         $postarray = simplexml_load_string($data);
         $access_token = $this->access();//获取token
         $openid = $postarray->FromUserName;//获取发送方的 openid
-        $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" . $access_token . "&openid=" . $openid . "&lang=zh_CN";
+        $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN";
         // Log::info("123456",$url);
-        $user = json_decode($this->http_get($url), true);
+        $user = json_decode($this->http_get($url),true);
         $WexiinModel = new WeixinModel;
-        $first = WeixinModel::where("openid", $user["openid"])->first();
+        $first = WeixinModel::where("openid",$user["openid"])->first();
         if ($first) {
             $array = ["你咋又回来了,滚犊子","欢迎回来!!!!"];
             $Content = $array[array_rand($array,1)];
