@@ -100,8 +100,8 @@ class TestController extends Controller
 		$json_str=$response->getBody();
 		// dd($json_str);
 		// dd($token);
-		// $token=json_decode($token,true);
-		$token=$json_str['access_token'];
+		$token=json_decode($json_str,true);
+		$token=$token['access_token'];
 		// dd($token);
 		Redis::setex("token",3600,$token);
 		}
