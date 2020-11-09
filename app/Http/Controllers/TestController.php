@@ -41,7 +41,7 @@ class TestController extends Controller
                 $openid = $pos->FromUserName;//获取发送方的 openid
                 $access_token = $this->access();//获取token
                 $url ="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN";
-                Log::info($url);
+                Log::info("===============================",$url);
              	// dd($url);
                 $user = json_decode($this->http_get($url),true);
                 if (isset($user["errcode"])) {
