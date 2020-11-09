@@ -20,7 +20,7 @@ class TestController extends Controller
         Log::info("=====接收数据====" . $data);
         //转换成对象
         $postarray = simplexml_load_string($data);
-        $access_token = $this->admin();//获取token
+        $access_token = $this->access();//获取token
         $openid = $postarray->FromUserName;//获取发送方的 openid
         $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" . $access_token . "&openid=" . $openid . "&lang=zh_CN";
         Log::info("123456",$url);
