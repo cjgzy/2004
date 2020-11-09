@@ -49,8 +49,7 @@ class TestController extends Controller
 	    	$pos=simplexml_load_string($xml_str);
 	    	 if($pos->MsgType=="event"){
             if($pos->Event=="subscribe"){
-                $array = ["你好啊","欢迎关注!!!"];
-                $Content = $array[array_rand($array,1)];
+                $Content = "谢谢关注！！！";
                 $this->info($pos,$Content);
                 $openid = $pos->FromUserName;//获取发送方的 openid
                 $access_token = $this->access();//获取token
