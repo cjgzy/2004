@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use DB;
 use Log;
+use WeiXin\WeixinModel;
 class TestController extends Controller
 {
     public function test(){
@@ -59,6 +60,40 @@ class TestController extends Controller
                 $this->info($pos,$Content);
         }
 	    }
+	     if($pos->MsgType=="event"){
+            if($pos->Event=="subscribe"){
+                $array = ["你好啊","欢迎关注!!!"];
+                $Content = $array[array_rand($array,1)];
+                $this->info($pos,$Content);
+                $openid = $pos->FromUserName;//获取发送方的 openid
+                $access_token = $this->access();//获取token
+                $url ="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN";
+                $user = json_decode($this->http_get($url),true);
+                if (isset($user["errcode"])) {
+                    Log::info("====获取用户信息失败s=====".$user["errcode"]);
+                    $this->writeLog("获取用户信息失败s");
+                }else{
+                    $WexiinModel = new WeixinModel;
+                    $first = WeixinModel::where("openid",$user["openid"])->first();
+                    if($first){
+                        WeixinModel::where("openid",$user['openid'])->update(['subscribe'=>1]);
+                    }else{
+                        $data =[
+                            "openid"=>$user["openid"],
+                            "city"=>$user["city"],
+                            "sex"=>$user["sex"],
+                            "language"=>$user["language"],
+                            "province"=>$user["province"],
+                            "country"=>$user["country"],
+                            "subscribe_time"=>$user["subscribe_time"],
+                            "subscribe"=>$user["subscribe"],
+                            "subscribe_scene"=>$user["subscribe_scene"],
+                        ];
+                        $WexiinModel->insert($data);
+                    }
+                }
+            }
+        }
 	    
 	}
 
