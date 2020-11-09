@@ -98,7 +98,7 @@ class TestController extends Controller
 		$Client=new Client();
 		$response=$Client->request('GET',$url,['verify'=>false]);
 		$json_str=$response->getBody();
-		// dd($json_str);
+		dd($json_str);
 		// dd($token);
 		// $token=json_decode($token,true);
 		$token=$json_str['access_token'];
