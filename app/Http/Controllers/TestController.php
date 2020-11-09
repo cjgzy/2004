@@ -23,7 +23,7 @@ class TestController extends Controller
         $access_token = $this->access();//获取token
         $openid = $postarray->FromUserName;//获取发送方的 openid
         $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" . $access_token . "&openid=" . $openid . "&lang=zh_CN";
-        Log::info("123456",$url);
+        // Log::info("123456",$url);
         $user = json_decode($this->http_get($url), true);
         $WexiinModel = new WeixinModel;
         $first = WeixinModel::where("openid", $user["openid"])->first();
