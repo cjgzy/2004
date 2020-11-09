@@ -62,9 +62,9 @@ class TestController extends Controller
         }
     }
 
-	public function info($pos,$Content){
-		$ToUserName=$pos->FromUserName;
-		$FromUserName=$pos->ToUserName;
+	public function info($postarray,$Content){
+		$ToUserName=$postarray->FromUserName;
+		$FromUserName=$postarray->ToUserName;
 		$CreateTime=time();
 		$MsgType="text";
 		   	$xml="<xml>
