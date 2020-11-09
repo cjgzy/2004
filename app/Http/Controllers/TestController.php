@@ -11,14 +11,9 @@ class TestController extends Controller
 {
   public function index(){
     	$res=$this->text();
-    	
-    	if ($res) {
-    		echo $_GET['echostr'];
-    	}
-
     }
       //自动回复
-    public function  test()
+    public function  text()
     {
         //接收数据
         $data = file_get_contents("php://input");
