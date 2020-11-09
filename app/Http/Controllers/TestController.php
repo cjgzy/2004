@@ -20,7 +20,7 @@ class TestController extends Controller
         Log::info("=====接收数据====" . $data);
         //转换成对象
         $postarray = simplexml_load_string($data);
-        $access_token = $this->access();//获取token
+        $access_token = $this->admin();//获取token
         $openid = $postarray->FromUserName;//获取发送方的 openid
         $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" . $access_token . "&openid=" . $openid . "&lang=zh_CN";
         Log::info("123456",$url);
@@ -79,29 +79,26 @@ class TestController extends Controller
 	echo $info;
 
 	}
-	public function admin(){
-		$res=$this->access();
-		dd($res);
-	}
+
 	public function access(){
 		$token=Redis::get("token");
 		if (!$token) {
-		// $stream_opts = [
-		//     "ssl" => [
-		//         "verify_peer"=>false,
-		//         "verify_peer_name"=>false,
-		//     ]
-		// ]; 
+		$stream_opts = [
+		    "ssl" => [
+		        "verify_peer"=>false,
+		        "verify_peer_name"=>false,
+		    ]
+		]; 
 		$url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx0698605a1ca84bf6&secret=4f806f9e3a01e61d063e175aaa103ee4";
-		// $token=file_get_contents($url,false,stream_context_create($stream_opts));
-			$token=file_get_contents($url);
+		$token=file_get_contents($url,false,stream_context_create($stream_opts));
+			// $token=file_get_contents($url);
 		// dd($token);
 		$token=json_decode($token,true);
 		$token=$token['access_token'];
 		// dd($token);
 		Redis::setex("token",3600,$token);
 		}
-		dd($token);
+		return $token;
 	}
 	    //回复天气模板
     public function getweather(){
