@@ -21,6 +21,12 @@ class TestController extends Controller
         //转换成对象
         $postarray = simplexml_load_string($data);
         $access_token = $this->access();//获取token
+        if($postarray->MsgType=="text"){
+                if($postarray->Content=="天气"){
+                    $Content = $this->getweather();
+                    $this->info($postarray,$Content);
+                }
+            }
         $openid = $postarray->FromUserName;//获取发送方的 openid
         $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN";
         // Log::info("123456",$url);
@@ -54,12 +60,7 @@ class TestController extends Controller
                 }
             }
         }
-         if($postarray->MsgType=="text"){
-                if($postarray->Content=="天气"){
-                    $Content = $this->getweather();
-                    $this->info($postarray,$Content);
-                }
-            }
+
     }
 
 	public function info($postarray,$Content){
