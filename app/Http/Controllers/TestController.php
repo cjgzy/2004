@@ -47,20 +47,7 @@ class TestController extends Controller
 	    	log::info($xml_str);
 	    	//将json转换成数组
 	    	$pos=simplexml_load_string($xml_str);
-	    	if ($pos->Event=='subscribe') {
-	    		if ($pos->MsgType=='event') {
-	    			$Content="谢谢关注";
-	    			$info=$this->info($pos,$Content);	
-	    		}
-	    	 }
-          }
-          if($pos->MsgType=="text"){
-            if($pos->Content=="天气"){
-                $Content = $this->getweather();
-                $this->info($pos,$Content);
-        }
-	    }
-	     if($pos->MsgType=="event"){
+	    	 if($pos->MsgType=="event"){
             if($pos->Event=="subscribe"){
                 $array = ["你好啊","欢迎关注!!!"];
                 $Content = $array[array_rand($array,1)];
@@ -94,6 +81,14 @@ class TestController extends Controller
                 }
             }
         }
+          }
+          if($pos->MsgType=="text"){
+            if($pos->Content=="天气"){
+                $Content = $this->getweather();
+                $this->info($pos,$Content);
+        }
+	    }
+	    
 	    
 	}
 
@@ -156,4 +151,28 @@ class TestController extends Controller
         Log::info("============".$weather);
 
     }
+
+
+
+
+
+
+
+
+
+
+
+public function text2(){
+	 print_r($_GET);
+}
+public function text3(){
+		$data="<ToUserName><![CDATA[oYpK-wk6zp8HRwv9Nge0xlO5pgh4]]></ToUserName>
+  <FromUserName><![CDATA[gh_445139791c58]]></FromUserName>
+  <CreateTime>1604879941</CreateTime>
+  <MsgType><![CDATA[text]]></MsgType>
+  <Content><![CDATA[地区:北京日期:2020-11-09温度:16℃/2℃风速:小于3级天气:晴地区:北京日期:2020-11-10温度:15℃/2℃风速:小于3级天气:晴地区:北京日期:2020-11-11温度:16℃/3℃风速:小于3级天气:多云地区:北京日期:2020-11-12温度:17℃/4℃风速:小于3级天气:晴地区:北京日期:2020-11-13温度:15℃/2℃风速:小于3级天气:晴转多云地区:北京日期:2020-11-14温度:12℃/3℃风速:小于3级天气:多云]]></Content>
+";
+echo $data;
+	}
+
 }
