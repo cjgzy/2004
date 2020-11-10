@@ -15,8 +15,6 @@ class TestController extends Controller
           //创建菜单
         $res1=$this->create_moun();
         echo $res1;
-        $data=$this->xinwen();
-        echo $data;
     } 
       //自动回复
     public function  text()
@@ -90,9 +88,9 @@ class TestController extends Controller
 	Log::info($info);
 	echo $info;
 	}
-    public function xinwen($content){
+    public function xinwen($Content){
         $key="04f4d3a7b600d4507956005d77a1c62e";
-        $top=$content;
+        $top=$Content;
         $url="http://v.juhe.cn/toutiao/index?type=$top&key=$key";
         $xml=file_get_contents($url);
         Log::info("===================",$xml);
