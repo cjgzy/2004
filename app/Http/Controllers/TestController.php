@@ -37,8 +37,8 @@ class TestController extends Controller
         $user = json_decode($this->http_get($url),true);
         $WexiinModel = new WeixinModel;
         $first = WeixinModel::where("openid",$user["openid"])->first();
-        if ($postarray->MsgType="event") {
-            if ($postarray->EventKey="V1001_TODAY_QQ") {
+        if ($postarray->MsgType=="event") {
+            if ($postarray->EventKey=="V1001_TODAY_QQ") {
                $Content="请输入你想看的新闻";
                $this->info($postarray,$Content);
             }
