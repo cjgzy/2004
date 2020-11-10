@@ -37,12 +37,7 @@ class TestController extends Controller
         $user = json_decode($this->http_get($url),true);
         $WexiinModel = new WeixinModel;
         $first = WeixinModel::where("openid",$user["openid"])->first();
-        if ($postarray->MsgType="event") {
-            if ($postarray->EventKey="V1001_TODAY_QQ") {
-               $content="请输入你想看的新闻";
-               $this->info($postarray,$content);
-            }
-        }
+        
         if ($first) {
             $array = ["欢迎回来!!!!"];
             $Content = $array[array_rand($array,1)];
@@ -69,7 +64,12 @@ class TestController extends Controller
                 }
             }
         }
-
+        if ($postarray->MsgType="event") {
+            if ($postarray->EventKey="V1001_TODAY_QQ") {
+               $content="请输入你想看的新闻";
+               $this->info($postarray,$content);
+            }
+        }
 
     }
 	public function info($postarray,$Content){
