@@ -124,12 +124,12 @@ class TestController extends Controller
            {    
                "type":"view",
                "name":"她爱吃屎",
-               "url":"http://www.soso.com/"
+               "url":"http://www.baidu.com/"
             },
             {
-               "type":"click",
+               "type":"view",
                "name":"这个绝对是真的",
-               "key":"V1001_GOOD"
+               "url":"http://www.baidu.com/"
             }]
        }]
  }';
