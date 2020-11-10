@@ -156,7 +156,7 @@ class TestController extends Controller
     public function getweather(){
         $url = "http://api.k780.com:88/?app=weather.future&weaid=beijing&&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json";
         $weather = file_get_contents($url);
-        $weather = json_decode($weather,true)
+        $weather = json_decode($weather,true);
         //dd($weather);
         // $aa = $weather["result"];
         // dd($aa);
