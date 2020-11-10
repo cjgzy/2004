@@ -81,7 +81,7 @@ class TestController extends Controller
 	$info=sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
 	Log::info($info);
 	echo $info;
-	}
+	}  
     public function create_moun(){
     $access_token=$this->access();
     $url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
