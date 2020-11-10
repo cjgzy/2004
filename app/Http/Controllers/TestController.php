@@ -88,11 +88,11 @@ class TestController extends Controller
                  "button":[
                  {
                       "type":"click",
-                      "name":"曹璐是傻狗",
+                      "name":"傻狗",
                       "key":"V1001_TODAY_QQ"
                   },
                   {
-                       "name":"曹璐",
+                       "name":"giao",
                        "sub_button":[
                        {
                            "type":"view",
@@ -101,7 +101,7 @@ class TestController extends Controller
                         },
                         {
                            "type":"click",
-                           "name":"曹璐经典语录",
+                           "name":"经典语录",
                            "key":"V1001_GOOD"
                         }]
                    }]
