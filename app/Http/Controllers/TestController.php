@@ -15,7 +15,7 @@ class TestController extends Controller
           //创建菜单
         $res1=$this->create_moun();
         echo $res1;
-    }
+    } 
       //自动回复
     public function  text()
     {
@@ -37,6 +37,12 @@ class TestController extends Controller
         $user = json_decode($this->http_get($url),true);
         $WexiinModel = new WeixinModel;
         $first = WeixinModel::where("openid",$user["openid"])->first();
+        if ($postarray->MsgType="event") {
+            if ($postarray->EventKey="V1001_TODAY_QQ") {
+               $content="请输入你想看的新闻";
+               $this->info($postarray,$content);
+            }
+        }
         if ($first) {
             $array = ["欢迎回来!!!!"];
             $Content = $array[array_rand($array,1)];
@@ -63,6 +69,8 @@ class TestController extends Controller
                 }
             }
         }
+
+
     }
 	public function info($postarray,$Content){
 		$ToUserName=$postarray->FromUserName;
@@ -79,8 +87,13 @@ class TestController extends Controller
 	$info=sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
 	Log::info($info);
 	echo $info;
-
 	}
+    public function xinwen($content){
+        $key="04f4d3a7b600d4507956005d77a1c62e";
+        $top=$content;
+        $url="http://v.juhe.cn/toutiao/index?type=$top&key=$key";
+        
+    }
     public function create_moun(){
     $access_token=$this->access();
     $url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
@@ -88,7 +101,7 @@ class TestController extends Controller
                  "button":[
                  {
                       "type":"click",
-                      "name":"傻狗",
+                      "name":"新闻",
                       "key":"V1001_TODAY_QQ"
                   },
                   {
@@ -96,7 +109,7 @@ class TestController extends Controller
                        "sub_button":[
                        {
                            "type":"view",
-                           "name":"小垃圾",
+                           "name":"新闻",
                            "url":"http://www.baidu.com/"
                         },
                         {
