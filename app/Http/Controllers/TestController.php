@@ -46,7 +46,7 @@ class TestController extends Controller
         if ($first) {
             $array = ["欢迎回来!!!!"];
             $Content = $array[array_rand($array,1)];
-            $this->info($postarray,$Content);
+            $this->info($postarray,$Content);die;
             
         } else {
 
