@@ -37,12 +37,18 @@ class TestController extends Controller
         $user = json_decode($this->http_get($url),true);
         $WexiinModel = new WeixinModel;
         $first = WeixinModel::where("openid",$user["openid"])->first();
-        
+        if ($postarray->MsgType="event") {
+            if ($postarray->EventKey="V1001_TODAY_QQ") {
+               $Content="请输入你想看的新闻";
+               $this->info($postarray,$Content);
+            }
+        }
         if ($first) {
             $array = ["欢迎回来!!!!"];
             $Content = $array[array_rand($array,1)];
             $this->info($postarray,$Content);die;
         } else {
+
             if ($postarray->MsgType == "event") {
                 if ($postarray->Event == "subscribe") {
                     $array = ["你好啊", "欢迎关注!!!"];
@@ -64,13 +70,6 @@ class TestController extends Controller
                 }
             }
         }
-        if ($postarray->MsgType="event") {
-            if ($postarray->EventKey="V1001_TODAY_QQ") {
-               $content="请输入你想看的新闻";
-               $this->info($postarray,$content);
-            }
-        }
-
     }
 	public function info($postarray,$Content){
 		$ToUserName=$postarray->FromUserName;
@@ -92,7 +91,7 @@ class TestController extends Controller
         $key="04f4d3a7b600d4507956005d77a1c62e";
         $top=$content;
         $url="http://v.juhe.cn/toutiao/index?type=$top&key=$key";
-        
+
     }
     public function create_moun(){
     $access_token=$this->access();
