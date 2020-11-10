@@ -23,7 +23,7 @@ Route::post("indexs","TestController@index");
 Route::get("access","TestController@access");
 // Route::get("admin","TestController@admin");
 Route::get("code_token","TestController@code_token");
-
+Route::post("create","TestController@create");//创建菜单
 
 
 Route::get("text2","TestController@text2");
@@ -38,3 +38,6 @@ Route::post("text5",function(){
 	$post=json_decode();
 	echo $post;
 });
+
+
+

@@ -37,7 +37,7 @@ class TestController extends Controller
         if ($first) {
             $array = ["欢迎回来!!!!"];
             $Content = $array[array_rand($array,1)];
-            $this->info($postarray,$Content);
+            $this->info($postarray,$Content);die;
         } else {
             if ($postarray->MsgType == "event") {
                 if ($postarray->Event == "subscribe") {
@@ -57,13 +57,10 @@ class TestController extends Controller
                         "subscribe_scene" => $user["subscribe_scene"],
                     ];
                     $WexiinModel->insert($data);
-
                 }
             }
         }
-
     }
-
 	public function info($postarray,$Content){
 		$ToUserName=$postarray->FromUserName;
 		$FromUserName=$postarray->ToUserName;
@@ -107,11 +104,59 @@ class TestController extends Controller
 		}
 		return $token;
 	}
+    public function create(){
+        $res=$this->create_moun();
+        echo $res;
+    }
+    public function create_moun(){
+        $access_token=$this->access();
+    $url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
+    $menu='{
+     "button":[
+     {  
+          "type":"click",
+          "name":"曹璐是傻狗",
+          "key":"V1001_TODAY_MUSIC"
+      },
+      {
+           "name":"曹璐爱什么",
+           "sub_button":[
+           {    
+               "type":"view",
+               "name":"她爱吃屎",
+               "url":"http://www.soso.com/"
+            },
+            {
+               "type":"click",
+               "name":"这个绝对是真的",
+               "key":"V1001_GOOD"
+            }]
+       }]
+ }';
+    $moun=$this->curl($url,$menu);
+    return $moun;
+    }
+     public function curl($url,$menu){
+        //1.初始化
+        $ch = curl_init();
+        //2.设置
+        curl_setopt($ch,CURLOPT_URL,$url);//设置提交地址
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,TRUE);//设置返回值返回字符串
+        curl_setopt($ch,CURLOPT_POST,1);//post提交方式
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$menu);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);
+        //3.执行
+        $output = curl_exec($ch);
+        //关闭
+        curl_close($ch);
+        return $output;
+    }
 	    //回复天气模板
     public function getweather(){
         $url = "http://api.k780.com:88/?app=weather.future&weaid=beijing&&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json";
         $weather = file_get_contents($url);
-        $weather = json_decode($weather,true);
+        $weather = json_decode($weather,true)
         //dd($weather);
         // $aa = $weather["result"];
         // dd($aa);
@@ -135,5 +180,5 @@ class TestController extends Controller
         curl_close($ch);    //关闭
         return $output;
  }
-
+ 
 }
