@@ -12,6 +12,9 @@ class TestController extends Controller
 {
   public function index(){
     	$res=$this->text();
+          //创建菜单
+        $res1=$this->create_moun();
+        echo $res1;
     }
       //自动回复
     public function  text()
@@ -104,10 +107,6 @@ class TestController extends Controller
 		}
 		return $token;
 	}
-    public function create(){
-        $res=$this->create_moun();
-        echo $res;
-    }
     public function create_moun(){
         $access_token=$this->access();
     $url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
