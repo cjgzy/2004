@@ -81,7 +81,34 @@ class TestController extends Controller
 	echo $info;
 
 	}
-
+    public function create_moun(){
+    $access_token=$this->access();
+    $url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
+    $menu='{
+                 "button":[
+                 {
+                      "type":"click",
+                      "name":"曹璐是傻狗",
+                      "key":"V1001_TODAY_QQ"
+                  },
+                  {
+                       "name":"曹璐",
+                       "sub_button":[
+                       {
+                           "type":"view",
+                           "name":"小垃圾",
+                           "url":"http://www.baidu.com/"
+                        },
+                        {
+                           "type":"click",
+                           "name":"曹璐经典语录",
+                           "key":"V1001_GOOD"
+                        }]
+                   }]
+             }';
+    $moun=$this->curl($url,$menu);
+    return $moun;
+    }
 	public function access(){
 		$token=Redis::get("token");
 		if (!$token) {
@@ -107,34 +134,7 @@ class TestController extends Controller
 		}
 		return $token;
 	}
-    public function create_moun(){
-        $access_token=$this->access();
-    $url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
-    $menu='{
-     "button":[
-     {  
-          "type":"click",
-          "name":"曹璐是傻狗",
-          "key":"V1001_TODAY_MUSIC"
-      },
-      {
-           "name":"曹璐爱什么",
-           "sub_button":[
-           {    
-               "type":"view",
-               "name":"她爱吃屎",
-               "url":"http://www.baidu.com/"
-            },
-            {
-               "type":"view",
-               "name":"这个绝对是真的",
-               "url":"http://www.baidu.com/"
-            }]
-       }]
- }';
-    $moun=$this->curl($url,$menu);
-    return $moun;
-    }
+
      public function curl($url,$menu){
         //1.初始化
         $ch = curl_init();
