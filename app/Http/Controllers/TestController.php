@@ -74,7 +74,6 @@ class TestController extends Controller
             $image = new User();
             $image->insert($data);
         }
-
         $openid = $postarray->FromUserName;//获取发送方的 openid
         $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN";
         // Log::info("123456",$url);
@@ -122,7 +121,7 @@ class TestController extends Controller
           <CreateTime>%s</CreateTime>
           <MsgType><![CDATA[%s]]></MsgType>
           <Content><![CDATA[%s]]></Content>
-</xml>";
+        </xml>";
 	$info=sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
 	Log::info($info);
 	echo $info;
@@ -233,6 +232,4 @@ class TestController extends Controller
         curl_close($ch);    //关闭
         return $output;
  }
-    
- 
 }
