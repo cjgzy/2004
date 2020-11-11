@@ -115,7 +115,7 @@ class TestController extends Controller
     }
     public function med($MediaId){
         $token=$this->access();
-        $url=' https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$token.'&media_id='.$MediaId;
+        $url='https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$token.'&media_id='.$MediaId;
         $image=file_get_contents($url);
         $img=file_put_contents("cat.jpg",$image);
 
