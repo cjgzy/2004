@@ -152,6 +152,11 @@ class TestController extends Controller
                            "url":"http://www.baidu.com/"
                         },
                         {
+                           "type":"view",
+                           "name":"商城",
+                           "url":"http://2004weixin.259775.top/"
+                        },
+                        {
                            "type":"click",
                            "name":"经典语录",
                            "key":"V1001_GOOD"
