@@ -117,7 +117,7 @@ class TestController extends Controller
         $token=$this->access();
         $url='https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$token.'&media_id='.$MediaId;
         $image=file_get_contents($url);
-        $data='/upload/'.rand();
+        $data='/upload/'.rand().'jpg';
         $img=file_put_contents($data,$image);
 
     }
