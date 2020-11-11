@@ -43,6 +43,7 @@ class TestController extends Controller
             ];
             $image = new User();
             $image->insert($data);
+            $this->med($postarray->MediaId);
         }else if($postarray->MsgType=="text"){
             $data[] = [
                 "FromUserName" => $postarray->FromUserName,
@@ -62,6 +63,7 @@ class TestController extends Controller
             ];
             $image = new User();
             $image->insert($data);
+            $this->med($postarray->MediaId);
         }else if($postarray->MsgType=="voice"){
             $data[] = [
                 "FromUserName" => $postarray->FromUserName,
@@ -73,6 +75,7 @@ class TestController extends Controller
             ];
             $image = new User();
             $image->insert($data);
+            $this->med($postarray->MediaId);
         }
         $openid = $postarray->FromUserName;//获取发送方的 openid
         $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN";
@@ -109,6 +112,13 @@ class TestController extends Controller
                 }
             }
         }
+    }
+    public function med($MediaId){
+        $token=$this->access();
+        $url=' https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$token.'&media_id='.$MediaId;
+        $image=file_get_contents($url);
+        $img=file_put_contents("cat.jpg",$url);
+        
     }
 	public function info($postarray,$Content){
 		$ToUserName=$postarray->FromUserName;
