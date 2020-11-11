@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Redis;
 use DB;
 use Log;
 use App\WeiXin\WeixinModel;
+use App\WeiXin\User;
 use GuzzleHttp\Client;
 class TestController extends Controller
 {
@@ -31,12 +32,56 @@ class TestController extends Controller
                     $this->info($postarray,$Content);
                 }
             }
+            $data = [];
+        if($postarray->MsgType=="image"){
+            $data[] = [
+                "FromUserName" => $postarray->FromUserName,
+                "CreateTime" => $postarray->CreateTime,
+                "MsgType" => $postarray->MsgType,
+                "PicUrl" => $postarray->PicUrl,
+                "MediaId" => $postarray->MediaId,
+            ];
+            $image = new User();
+            $image->insert($data);
+        }else if($postarray->MsgType=="text"){
+            $data[] = [
+                "FromUserName" => $postarray->FromUserName,
+                "CreateTime" => $postarray->CreateTime,
+                "MsgType" => $postarray->MsgType,
+                "Content" => $postarray->Content,
+                ];
+            $image = new User();
+            $image->insert($data);
+        }else if($postarray->MsgType=="video"){
+            $data[] = [
+                "FromUserName" => $postarray->FromUserName,
+                "CreateTime" => $postarray->CreateTime,
+                "MsgType" => $postarray->MsgType,
+                "MediaId" => $postarray->MediaId,
+                "ThumbMediaId" =>$postarray->ThumbMediaId,
+            ];
+            $image = new User();
+            $image->insert($data);
+        }else if($postarray->MsgType=="voice"){
+            $data[] = [
+                "FromUserName" => $postarray->FromUserName,
+                "CreateTime" => $postarray->CreateTime,
+                "MsgType" => $postarray->MsgType,
+                "MediaId" => $postarray->MediaId,
+                "Format" => $postarray->Format,
+                "ThumbMediaId" =>$postarray->ThumbMediaId,
+            ];
+            $image = new User();
+            $image->insert($data);
+        }
+
         $openid = $postarray->FromUserName;//获取发送方的 openid
         $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN";
         // Log::info("123456",$url);
         $user = json_decode($this->http_get($url),true);
         $WexiinModel = new WeixinModel;
         $first = WeixinModel::where("openid",$user["openid"])->first();
+        
         if ($first) {
             $array = ["欢迎回来!!!!"];
             $Content = $array[array_rand($array,1)];
@@ -72,16 +117,23 @@ class TestController extends Controller
 		$CreateTime=time();
 		$MsgType="text";
 		   	$xml="<xml>
-  <ToUserName><![CDATA[%s]]></ToUserName>
-  <FromUserName><![CDATA[%s]]></FromUserName>
-  <CreateTime>%s</CreateTime>
-  <MsgType><![CDATA[%s]]></MsgType>
-  <Content><![CDATA[%s]]></Content>
+          <ToUserName><![CDATA[%s]]></ToUserName>
+          <FromUserName><![CDATA[%s]]></FromUserName>
+          <CreateTime>%s</CreateTime>
+          <MsgType><![CDATA[%s]]></MsgType>
+          <Content><![CDATA[%s]]></Content>
 </xml>";
 	$info=sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
 	Log::info($info);
 	echo $info;
-	}  
+	}
+    public function xinwen($Content){
+        $key="04f4d3a7b600d4507956005d77a1c62e";
+        $top=$Content;
+        $url="http://v.juhe.cn/toutiao/index?type=$top&key=$key";
+        $xml=file_get_contents($url);
+        Log::info("===================",$xml);
+    }
     public function create_moun(){
     $access_token=$this->access();
     $url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
@@ -110,6 +162,7 @@ class TestController extends Controller
     $moun=$this->curl($url,$menu);
     return $moun;
     }
+    //获取token
 	public function access(){
 		$token=Redis::get("token");
 		if (!$token) {
@@ -126,7 +179,7 @@ class TestController extends Controller
 		$Client=new Client();
 		$response=$Client->request('GET',$url,['verify'=>false]);
 		$json_str=$response->getBody();
-		// dd($json_str);
+		// dd($json_str); 
 		// dd($token);
 		$token=json_decode($json_str,true);
 		$token=$token['access_token'];
@@ -180,5 +233,6 @@ class TestController extends Controller
         curl_close($ch);    //关闭
         return $output;
  }
+    
  
 }
